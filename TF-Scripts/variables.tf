@@ -36,7 +36,7 @@ variable "dns_prefix" {
 
 variable "namespace" {
   type        = string
-  default = "sock-shop-3"
+  default = "sockshop"
 }
 
 variable "carts_name" {
