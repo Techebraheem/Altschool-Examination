@@ -1,4 +1,5 @@
-![grafana](https://github.com/user-attachments/assets/0d8aad2d-f398-4960-b483-09ebafb90ae2)![prometheus](https://github.com/user-attachments/assets/00476a50-156b-4aae-88f3-27fe3b7c28b5)![kubernetes2](https://github.com/user-attachments/assets/e7f64058-d01c-4384-8749-5feac1c24d39)![Tf-dimension](https://github.com/user-attachments/assets/beb1a966-7b77-4a94-a0f4-09f0d404b8ce)
+![grafana](https://github.com/user-attachments/assets/0d8aad2d-f398-4960-b483-09ebafb90ae2)![prometheus](https://github.com/user-attachments/assets/00476a50-156b-4aae-88f3-27fe3b7c28b5)![kubernetes2](https://github.com/user-attachments/assets/e7f64058-d01c-4384-8749-5feac1c24d39)![TF3](https://github.com/user-attachments/assets/f0a6b3ec-f6d4-4d32-bc66-851b1a9e338a)
+
 
 
 # Socks Shop Microservices Deployment#
