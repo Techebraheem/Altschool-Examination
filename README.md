@@ -2,7 +2,10 @@
 
 
 
-# Socks Shop Microservices Deployment#
+# Socks Shop Microservices Deployment
+
+![sockshop](https://github.com/user-attachments/assets/8c47341f-27cd-44bf-91fe-337a008289b9)
+
 
 # Project Overview<
 **Objective:** The goal of this project is to deploy the Socks Shop application, a microservices-based demo application, on a Kubernetes cluster using Infrastructure as Code (IaaC). The deployment is designed to be automated, efficient, and reliable, ensuring that the application can be deployed consistently across different environments. Additionally, the deployment includes robust monitoring, logging, and alerting mechanisms using Prometheus and Grafana.
