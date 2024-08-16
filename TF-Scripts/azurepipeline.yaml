@@ -1,0 +1,65 @@
+
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- terraform
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  azureServiceConnection: 'Altschool-connection'
+  azureResourceGroup: 'Alx-deploy'
+  azureLocation: 'East US'
+
+stages:
+- stage: Terraform
+  jobs:
+  - job: TerraformJob
+    steps:
+
+    - checkout: self
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          az account show
+
+    - task: TerraformInstaller@0
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformCLI@2
+      inputs:
+        command: 'init'
+        backendType: 'azurerm'
+        backendServiceArm: 'Moetech(f20b48e1-b5b8-401e-9541-e954276807cc)'
+        allowTelemetryCollection: true
+
+    # - task: TerraformCLI@0
+    #   inputs:
+    #     command: 'plan'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+    - task: TerraformCLI@2
+      inputs:
+        command: 'plan'
+        environmentServiceName: 'Moetech(f20b48e1-b5b8-401e-9541-e954276807cc)'
+        allowTelemetryCollection: true
+
+    # - task: TerraformCLI@0
+    #   inputs:
+    #     command: 'apply'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+    #     #environmentServiceNameAzureRM: $(azureServiceConnection)
+    #     commandOptions: '-auto-approve'
+    - task: TerraformCLI@2
+      inputs:
+        command: 'apply'
+        environmentServiceName: 'Moetech(f20b48e1-b5b8-401e-9541-e954276807cc)'
+        allowTelemetryCollection: true
+  
