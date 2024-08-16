@@ -41,22 +41,12 @@ stages:
         backendServiceArm: 'Moetech(f20b48e1-b5b8-401e-9541-e954276807cc)'
         allowTelemetryCollection: true
 
-    # - task: TerraformCLI@0
-    #   inputs:
-    #     command: 'plan'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
     - task: TerraformCLI@2
       inputs:
         command: 'plan'
         environmentServiceName: 'Moetech(f20b48e1-b5b8-401e-9541-e954276807cc)'
         allowTelemetryCollection: true
 
-    # - task: TerraformCLI@0
-    #   inputs:
-    #     command: 'apply'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-    #     #environmentServiceNameAzureRM: $(azureServiceConnection)
-    #     commandOptions: '-auto-approve'
     - task: TerraformCLI@2
       inputs:
         command: 'apply'
