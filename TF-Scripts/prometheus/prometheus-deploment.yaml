@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+    spec:
+      serviceAccountName: prometheus
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            - '--storage.tsdb.retention.time=6h'
+            - '--storage.tsdb.path=/prometheus'
+            - '--config.file=/etc/prometheus/prometheus.yml'
+          env:
+            - name: AZURE_STORAGE_ACCOUNT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: azure-secret
+                  key: azurestorageaccountname
+            - name: AZURE_STORAGE_ACCOUNT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: azure-secret
+                  key: azurestorageaccountkey
+            - name: PROM_REFRENCE_MAP
+              valueFrom: 
+                configMapKeyRef:
+                  name: prometheus-config
+                  key: prometheus.yml
+          volumeMounts:
+            - name: pv-prometheus
+              mountPath: /prometheus
+            - name: config-volume
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "250m"
+            limits:
+              memory: "300Mi"
+              cpu: "500m"                             
+          ports:
+          - name: web
+            containerPort: 9090
+      volumes:
+        - name: pv-prometheus
+          persistentVolumeClaim:
+            claimName: pvc-prometheus
+        - name: config-volume
+          configMap:
+            name: prometheus-config    
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: monitoring
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9090'
+spec:
+  ports:
+   - protocol: TCP
+     port: 80
+     targetPort: 9090
+  selector:
+    app: prometheus
+  type: LoadBalancer
+

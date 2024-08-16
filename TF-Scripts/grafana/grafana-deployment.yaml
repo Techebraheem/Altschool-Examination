@@ -1,0 +1,76 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      name: grafana
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:latest
+        ports:
+        - name: grafana
+          containerPort: 3000
+        env:
+          - name: AZURE_STORAGE_ACCOUNT_NAME
+            valueFrom:
+              secretKeyRef:
+                name: azure-secret
+                key: azurestorageaccountname
+          - name: AZURE_STORAGE_ACCOUNT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: azure-secret
+                key: azurestorageaccountkey
+          - name: GRAF_REFRENCE_MAP
+            valueFrom:
+              configMapKeyRef:
+                name: grafana-datasources
+                key: prometheus.yaml
+        resources:
+          limits:
+            memory: "300Mi"
+            cpu: "300m"
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+        volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: pv-grafana
+          # - mountPath: /etc/grafana/provisioning/datasources
+          #   name: grafana-datasources
+          #   readOnly: false
+      volumes:
+        - name: pv-grafana
+          persistentVolumeClaim:
+            claimName: pvc-grafana
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: monitoring
+  annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/port:   '3000'
+spec:
+  selector:
+    app: grafana
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+        
+          
