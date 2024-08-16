@@ -1,9 +1,5 @@
 
 
-![grafana](https://github.com/user-attachments/assets/0d8aad2d-f398-4960-b483-09ebafb90ae2)![prometheus](https://github.com/user-attachments/assets/00476a50-156b-4aae-88f3-27fe3b7c28b5)![kubernetes2](https://github.com/user-attachments/assets/e7f64058-d01c-4384-8749-5feac1c24d39)
-
-
-
 # Socks Shop Microservices Deployment
 
 ![sockshop](https://github.com/user-attachments/assets/8c47341f-27cd-44bf-91fe-337a008289b9)
